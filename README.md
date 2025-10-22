@@ -1,1 +1,1 @@
-# CPSC440-RISC-V-numberic-ops
+# CPSC440-RISC-V-numeric-ops
