@@ -1,0 +1,35 @@
+RISC-V CPU Design and Simulation Project 
+
+PROJECT OVERVIEW:
+- Single-cycle RISC-V CPU simulation in Python
+- Focus on RV32I base instruction set with core operations
+
+DEVELOPMENT PHASES:
+
+Phase 1: Foundation Components (Separate)
+- ALU (Arithmetic Logic Unit)
+- Register File (32 registers)
+- Memory Interface
+
+Phase 2+3: Instruction Decoder & Control Unit (COMPLETED)
+- Minimal instruction decoder supporting essential formats (R,I,S,B,U,J)
+- Basic control signal generation
+- Essential operations: ADD, ADDI, SUB, LUI, LW, SW, BEQ, JAL
+- Test with prog.hex (20 instructions)
+
+Phase 4: Single-Cycle Datapath (Next)
+- Connect all components
+- Implement fetch-decode-execute cycle
+- Basic pipeline without hazards
+
+Files:
+- core/instruction_decoder.py
+- core/control_unit.py
+- test_prog_hex.py
+- prog.hex
+
+Test Status:
+- Instruction decoder - All formats working
+- Control unit - Essential signals generated
+- Integration - decode_and_control() working
+- Awaiting Phase 1 components for full CPU test
