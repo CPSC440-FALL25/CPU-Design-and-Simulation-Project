@@ -16,21 +16,27 @@ Phase 2+3: Instruction Decoder & Control Unit - COMPLETED
 - Control signal generation for single-cycle CPU
 - Test with prog.hex (20 instructions)
 
-Phase 4: Single-Cycle Datapath - 🚧 TO BE IMPLEMENTED (separate branch)
-- Connect all components (ALU, Register File, Memory, Control)
-- Implement fetch-decode-execute cycle
-- Complete CPU integration with utils/ utilities
+Phase 4: Single-Cycle Datapath - COMPLETED (feature/single-cycle-cpu branch)
+- Connect all components (ALU, Register File, Memory, Control) 
+- Implement fetch-decode-execute cycle 
+- Complete CPU integration with utils/ utilities 
 
 Files:
 - core/instruction_decoder.py - Working
 - core/control_unit.py - Working
+- core/register_file.py - Complete register file
+- core/memory_interface.py - Instruction/data memory
+- core/integrated_alu.py - Unified ALU interface
+- core/single_cycle_datapath.py - Complete CPU implementation
 - utils/ - Complete RISC-V utilities from midterm project
 - test_prog_hex.py - Test framework ready
-- prog.hex - Test program ready
+- test_datapath.py - Comprehensive CPU tests
+- prog.hex - Test program ready and working
 
 Test Status:
 - Instruction decoder - All formats working
 - Control unit - Signal generation working  
 - Integration - decode_and_control() working
 - Utils available - All arithmetic/memory utilities ready
-- Phase 4 - Ready for implementation in separate branch
+- Phase 4 - COMPLETED - Full single-cycle CPU implemented and tested
+- Complete CPU - Successfully executing prog.hex with all instruction types
