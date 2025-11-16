@@ -20,9 +20,9 @@ API:
 """
 
 from typing import Dict, Tuple
-from bitvec import Bits, zero_bits, left_pad, twos_complement_negate, is_negative, bits_to_hex
-from shifter import shifter
-from alu import alu
+from .bitvec import Bits, zero_bits, left_pad, twos_complement_negate, is_negative, bits_to_hex
+from .shifter import shifter
+from .alu import alu
 
 def _abs_bits(bits: Bits) -> Tuple[Bits, int]:
     if is_negative(bits):
