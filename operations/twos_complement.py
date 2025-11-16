@@ -160,6 +160,18 @@ def zero_extend(bits: Bits, src_width: int, dst_width: int) -> Bits:
         return bits[-dst_width:]
     return [0]*(dst_width - src_width) + bits[-src_width:]
 
+def truncate_bits(value: int, to_bits: int) -> int:
+    """
+    Keep only the lowest `to_bits` bits of `value`.
+    Examples:
+      truncate_bits(0b11110101, 4) -> 0b0101
+    """
+    if to_bits <= 0:
+        raise ValueError("Bit width must be positive")
+    mask = (1 << to_bits) - 1
+    return value & mask
+
+
 def encode_twos_complement(value: Union[int, str]) -> Dict[str, Union[str, int]]:
     """Encode signed decimal value to 32-bit two's-complement.
     Returns {'bin': <nibble-grouped bits>, 'hex': '0x........', 'overflow': 0/1}.
