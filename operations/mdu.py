@@ -37,55 +37,66 @@ def _equal_bits(a: Bits, b: Bits) -> bool:
     return all(x==y for x,y in zip(a,b))
 
 def mdu_mul(op: str, rs1_bits: Bits, rs2_bits: Bits) -> Dict[str, object]:
-    if op != "MUL":
-        raise NotImplementedError("Only MUL (signed* signed, low 32) is implemented in this step")
-
+    if op not in ("MUL", "MULH", "MULHU", "MULHSU"):
+        raise NotImplementedError(f"Unsupported op: {op}")
     if len(rs1_bits) != 32 or len(rs2_bits) != 32:
-        raise ValueError("MUL currently expects 32-bit inputs")
+        raise ValueError("MUL family expects 32-bit inputs")
 
-    # Get magnitudes and result sign (signed multiply semantics)
-    a_mag, a_neg = _abs_bits(rs1_bits)
-    b_mag, b_neg = _abs_bits(rs2_bits)
-    res_neg = 1 if (a_neg ^ b_neg) else 0
+    # Choose signedness per op
+    if op in ("MUL", "MULH"):                    # signed × signed
+        a_mag, a_neg = _abs_bits(rs1_bits)
+        b_mag, b_neg = _abs_bits(rs2_bits)
+        res_neg = 1 if (a_neg ^ b_neg) else 0
+    elif op == "MULHU":                          # unsigned × unsigned
+        a_mag, b_mag = rs1_bits[:], rs2_bits[:]
+        res_neg = 0
+    else:  # "MULHSU"                            # signed × unsigned
+        a_mag, a_neg = _abs_bits(rs1_bits)
+        b_mag = rs2_bits[:]                      # use as magnitude; do NOT abs()
+        res_neg = a_neg
 
-    # 64-bit accumulator and 64-bit multiplicand; 32-bit multiplier (magnitudes, unsigned shift)
+    # 64-bit accumulator + 64-bit mcand, 32-bit mplier (magnitudes)
     acc = zero_bits(64)
-    mcand = left_pad(a_mag, 64)          # multiplicand in low 32, rest 0
-    mplier = b_mag[:]                    # 32 bits
+    mcand = left_pad(a_mag, 64)
+    mplier = b_mag[:]
 
     trace = []
     for step in range(32):
-        # If LSB of multiplier is 1, add multiplicand into acc
         if mplier[-1] == 1:
             acc, _ = add_rca(acc, mcand, 0)
             action = "ADD"
         else:
             action = "NOP"
 
-        # record a compact trace line (hex for readability)
-        t = f"step={step:02d} acc=0x{bits_to_hex(acc)[-16:]} mcand<<=1=0x{bits_to_hex(mcand)[-16:]} mplier=0x{bits_to_hex(left_pad(mplier,32))[-8:]} action={action}"
+        t = (
+            f"step={step:02d} "
+            f"acc=0x{bits_to_hex(acc)[-16:]} "
+            f"mcand<<=1=0x{bits_to_hex(mcand)[-16:]} "
+            f"mplier=0x{bits_to_hex(left_pad(mplier,32))[-8:]} "
+            f"action={action}"
+        )
         trace.append(t)
 
-        # Shift multiplicand left by 1 (logical), multiplier right by 1 (logical on magnitude)
         mcand = shifter(mcand, 1, "SLL")
         mplier = shifter(mplier, 1, "SRL")
 
-    # Apply sign to the 64-bit product if needed
-    if res_neg == 1 and any(bit == 1 for bit in acc):  # negate non-zero acc
+    # Apply sign if needed (only the signed cases)
+    if res_neg == 1 and any(bit == 1 for bit in acc):
         acc = twos_complement_negate(acc)
 
-    # Low/High halves
     lo = acc[-32:]
     hi = acc[:32]
 
-    # Overflow (extra, for grading): does the 64-bit product fit in signed 32?
-    # If we sign-extend the low 32 back to 64 and it equals the true acc, it's representable.
-    sx_lo_to_64 = _sign_extend(lo, 64)
-    overflow = 0 if _equal_bits(sx_lo_to_64, acc) else 1
+    # Overflow flag (extra for grading): only meaningful for plain MUL
+    if op == "MUL":
+        sx_lo_to_64 = _sign_extend(lo, 64)
+        overflow = 0 if _equal_bits(sx_lo_to_64, acc) else 1
+    else:
+        overflow = 0
 
     return {
-        "rd_bits": lo,
-        "hi_bits": hi,
+        "rd_bits": lo,    # architectural result for MUL; for H-variants tests read hi_bits
+        "hi_bits": hi,    # high 32 (used by MULH/MULHU/MULHSU)
         "overflow": overflow,
         "trace": trace,
     }
