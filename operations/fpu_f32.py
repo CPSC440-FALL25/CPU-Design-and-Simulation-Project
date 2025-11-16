@@ -372,6 +372,10 @@ def fadd_f32(a_bits: Bits, b_bits: Bits) -> Dict[str, object]:
     sb, eb, fb = unpack_f32_fields(b_bits)
     ka = classify_f32(a_bits)
     kb = classify_f32(b_bits)
+    
+    # trace classify
+    from bitvec import bits_to_hex  # local import for tracing strings
+    trace.append("classify: A=" + ka["kind"] + " B=" + kb["kind"])
 
     # NaN propagation
     if ka["kind"] == "NAN":  # qNaN in, return it
