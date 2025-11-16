@@ -6,30 +6,31 @@ PROJECT OVERVIEW:
 
 DEVELOPMENT PHASES:
 
-Phase 1: Foundation Components (Separate)
-- ALU (Arithmetic Logic Unit)
-- Register File (32 registers)
-- Memory Interface
+Phase 1: Foundation Components - AVAILABLE (midterm utilities)
+- ALU (Arithmetic Logic Unit) - Available in utils/alu.py, utils/mdu.py
+- Register File operations - Available in utils/bitvec.py, utils/twos_complement.py  
+- Memory Interface utilities - Available in utils/ (bit-vector operations)
 
-Phase 2+3: Instruction Decoder & Control Unit (COMPLETED)
-- Minimal instruction decoder supporting essential formats (R,I,S,B,U,J)
-- Basic control signal generation
-- Essential operations: ADD, ADDI, SUB, LUI, LW, SW, BEQ, JAL
+Phase 2+3: Instruction Decoder & Control Unit - COMPLETED
+- Instruction decoder supporting essential formats (R,I,S,B,U,J)
+- Control signal generation for single-cycle CPU
 - Test with prog.hex (20 instructions)
 
-Phase 4: Single-Cycle Datapath (Next)
-- Connect all components
+Phase 4: Single-Cycle Datapath - 🚧 TO BE IMPLEMENTED (separate branch)
+- Connect all components (ALU, Register File, Memory, Control)
 - Implement fetch-decode-execute cycle
-- Basic pipeline without hazards
+- Complete CPU integration with utils/ utilities
 
 Files:
-- core/instruction_decoder.py
-- core/control_unit.py
-- test_prog_hex.py
-- prog.hex
+- core/instruction_decoder.py - Working
+- core/control_unit.py - Working
+- utils/ - Complete RISC-V utilities from midterm project
+- test_prog_hex.py - Test framework ready
+- prog.hex - Test program ready
 
 Test Status:
 - Instruction decoder - All formats working
-- Control unit - Essential signals generated
+- Control unit - Signal generation working  
 - Integration - decode_and_control() working
-- Awaiting Phase 1 components for full CPU test
+- Utils available - All arithmetic/memory utilities ready
+- Phase 4 - Ready for implementation in separate branch
