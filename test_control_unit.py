@@ -1,5 +1,5 @@
 """
-Minimal test for RISC-V Control Unit
+Test for RISC-V Control Unit
 Tests essential control signal generation
 """
 
@@ -7,7 +7,7 @@ import unittest
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from core.control_unit import ControlUnit, ALUOperation
 
 

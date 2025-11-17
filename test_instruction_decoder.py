@@ -1,5 +1,5 @@
 """
-Minimal test for RISC-V Instruction Decoder
+Ttest for RISC-V Instruction Decoder
 Tests essential functionality with test_base.hex instructions
 """
 
@@ -7,7 +7,7 @@ import unittest
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from core.instruction_decoder import InstructionDecoder, InstructionType
 
 
