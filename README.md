@@ -1,5 +1,8 @@
 ## RISC-V Single-Cycle CPU Implementation
 
+Ryan Takata (ryan.takata@csu.fullerton.edu)
+Anthony Endo (anthonyendo@csu.fullerton.edu)
+
 A complete implementation of a RISC-V single-cycle CPU supporting the RV32I base instruction set plus M extension. The CPU includes all major components: instruction fetch, decode, execute, memory access, and writeback stages integrated into a single-cycle datapath.
 
 ## Usage Instructions
